@@ -1,0 +1,27 @@
+<apex:page >
+    <script type="text/javascript">
+        (function(){
+            "use strict";
+
+            var app = angular.module("Controllers", ["Services"]);
+
+            // 例外処理
+            app.factory("$exceptionHandler", function () {
+                return function (exception, cause) {
+                    console.log(exception.message);
+                    var msg = "画面の処理中にエラーが発生しました。" + "ご迷惑をおかけしております。";
+                    alert(msg);
+                };
+            });
+        
+            // AngularContactListCtrl
+            app.controller("AngularContactListCtrl", ["$scope", "AngularContactListServices", function($scope, services) {
+                try {
+                    services.init($scope);
+                } catch (e) {
+                    throw e;
+                }
+            }]);
+        })();
+    </script>
+</apex:page>

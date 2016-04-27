@@ -1,0 +1,36 @@
+<apex:page >
+    <script type="text/javascript">
+        var app = angular.module("Services", []);
+
+        app.factory("AngularContactListServices", ["$rootScope", function($rootScope) {
+            // 初期処理
+            function init(scope) {
+                // 取引先責任者取得
+                getContacts(scope);
+            }
+
+            // 取引先責任者取得
+            function getContacts(scope) {
+                AngularContactController.getContacts(
+                    function(results, event) {
+                        if(event.status) {
+                            // 結果をセット
+                            scope.contacts = results;
+                        } else {
+                            scope.errorMessages = event.message;
+                        }
+                        // Viewに反映
+                        $rootScope.$apply();
+                    },
+                    { buffer: true, escape: false, timeout: 30000 }
+                );
+            }
+
+            return {
+                init: function(scope) {
+                    return init(scope);
+                }
+            };
+        }]);
+    </script>
+</apex:page>
